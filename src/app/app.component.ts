@@ -28,9 +28,9 @@ export class AppComponent implements OnInit {
   constructor(
     private controlService:ControlService,
     private fb:FormBuilder
-    ){}
+    ){this.dynamicForm = this.fb.group({})}
 
-  ngOnInit(): void {
+    ngOnInit(): void {
     this.getControls();
   }
 
@@ -54,8 +54,8 @@ export class AppComponent implements OnInit {
       if (field.enabled) {
         formGroup[field.name] = [field.value, [
           field.validators.required ? Validators.required : Validators.nullValidator,
-          field.name === 'email' ? Validators.email : Validators.nullValidator
-        ]];
+          field.name === 'email' ? Validators.email : Validators.nullValidator]
+        ];
       }
     }
 
@@ -67,10 +67,14 @@ export class AppComponent implements OnInit {
   }
 
   private getControls(){
-    this.controlService.getControls().subscribe((value)=>{
-      this.controls = value.controls;
-
-      this.generateForm()
+    this.controlService.getControls().subscribe({
+      next:(value)=> {
+        this.controls = value.controls;
+        this.generateForm();
+      },
+      error:(err)=> {
+        console.log(err);
+      },
     });
   }
 }
