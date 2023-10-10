@@ -2,22 +2,26 @@
   <h1>{{title}}</h1>
 
   <form [formGroup]="dynamicForm">
-    <div *ngFor="let control of filteredControls" style="margin-bottom: 20px;">
+    <div *ngFor="let control of filteredControls" >
 
-      <div *ngIf="control?.enabled" style="display: flex; gap: 10px; justify-content: flex-start; margin-top: 10px;">
+      <div *ngIf="control?.enabled">
 
-        <div *ngIf="control?.type == 'text' || control?.type == 'number' || control?.type == 'email'">
-          <label>{{ control?.label }}</label>
-          <input
-          [type]="control?.type"
-          [formControlName]="control?.name"
-          [name]="control?.name"
-        />
+        <div *ngIf="control?.type == 'text' || control?.type == 'number' || control?.type == 'email'" class="mb-3 row">
+          <label for="typeahead-template" class="col-xs-3 col-sm-auto col-form-label">{{ control?.label }}</label>
+          <div class="col">
+            <input
+            class="form-control col"
+            [type]="control?.type"
+            [formControlName]="control?.name"
+            [name]="control?.name"
+          />
+          </div>
         </div>
 
-        <div *ngIf="control?.type == 'checkbox'">
-          <label>{{ control?.label }}</label>
+        <div *ngIf="control?.type == 'checkbox'" class="mb-3 row">
+          <label for="typeahead-template" class="col-xs-3 col-sm-auto col-form-label">{{ control?.label }}</label>
           <input
+          class="form-control col"
           [type]="control?.type"
           [formControlName]="control?.name"
           [name]="control?.name"
@@ -25,9 +29,9 @@
         />
         </div>
 
-        <div *ngIf="control?.type == 'select'">
-          <label>{{ control?.label }}</label>
-          <select [formControlName]="control?.name" [name]="control?.name">
+        <div *ngIf="control?.type == 'select'" class="mb-3 row">
+          <label for="typeahead-template" class="col-xs-3 col-sm-auto col-form-label">{{ control?.label }}</label>
+          <select  class="form-control col" [formControlName]="control?.name" [name]="control?.name">
             <option *ngFor="let country of control?.values" [value]="country">
               {{country}}
             </option>
@@ -36,11 +40,11 @@
 
         <div *ngIf="dynamicForm.controls[control?.name]?.invalid && (dynamicForm.controls[control?.name]?.dirty || dynamicForm.controls[control?.name]?.touched)">
           <div *ngIf="dynamicForm.controls[control?.name].hasError('email') && !dynamicForm.controls[control?.name].hasError('required')">
-              * {{control?.name}} is invalid.
+            <ngb-alert type="danger">* {{control?.name}} is invalid.</ngb-alert>
           </div>
 
           <div *ngIf="dynamicForm.controls[control?.name].hasError('required')">
-            * {{control?.name}} is required.
+            <ngb-alert type="warning">* {{control?.name}} is required.</ngb-alert>
           </div>
 
           <div *ngIf="dynamicForm.controls[control?.name]?.errors?.emailMismatch">
@@ -51,6 +55,6 @@
       </div>
     </div>
 
-    <button type="button" (click)="onSubmit()" [disabled]="dynamicForm.invalid">Submit</button>
+    <button class="btn btn-primary" type="button" (click)="onSubmit()" [disabled]="dynamicForm.invalid">Submit</button>
   </form>
 </div>
