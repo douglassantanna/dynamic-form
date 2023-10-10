@@ -1,17 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+
 import { ControlService } from './control.service';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 
-export function createConfirmEmailValidator(): ValidatorFn {
-  return (formGroup:AbstractControl) : ValidationErrors | null => {
-
-    let email = formGroup.get('email')?.value;
-    let confirmEmail = formGroup.get('confirmemail')?.value;
-    if(email !== confirmEmail){
-      return {emailMatch:true}
-    }
-    return null;
-  }
+export function createConfirmEmailValidator(formGroup: FormGroup): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null =>
+    control.value === formGroup.get('email')?.value
+          ? null : {emailMismatch: true};
 }
 
 @Component({
@@ -24,38 +19,19 @@ export class AppComponent implements OnInit {
 
   dynamicForm: FormGroup = {} as FormGroup;
 
-  controls: any = {};
+  controls: any[] = [];
+  filteredControls: any[] = [];
+
+  isMembeship = true;
+  selectedEvent = true;
 
   constructor(
-    private controlService:ControlService, 
+    private controlService:ControlService,
     private fb:FormBuilder
     ){}
- 
-  
-  private getControls(){
-    this.controlService.getControls().subscribe((value)=>{
-      this.controls = value.controls;
-
-      this.generateForm()
-    });
-  }
 
   ngOnInit(): void {
     this.getControls();
-  }
-
-  private generateForm() {
-    const formGroup: any = {};
-
-    for(let field of this.controls){
-      if(field.enabled){
-        formGroup[field.name] = [field.value, [
-          field.validators.required ? Validators.required : Validators.nullValidator, 
-          field.name == 'email' ? Validators.email : Validators.nullValidator,
-          field.name == 'confirmemail' ? Validators.pattern : Validators.nullValidator]];
-      }
-    }
-    this.dynamicForm = this.fb.group(formGroup)
   }
 
   onSubmit(){
@@ -64,5 +40,37 @@ export class AppComponent implements OnInit {
 
   setCheckboxValue(field:any, event:any){
     this.dynamicForm.get(field)?.setValue(event.target.checked);
+  }
+
+  private generateForm() {
+    const formGroup: any = {};
+    this.filteredControls = this.controls;
+
+    if (this.isMembeship || this.selectedEvent) {
+      this.filteredControls = this.filteredControls.filter((control: any) => control.name !== 'home');
+    }
+
+    for (let field of this.filteredControls) {
+      if (field.enabled) {
+        formGroup[field.name] = [field.value, [
+          field.validators.required ? Validators.required : Validators.nullValidator,
+          field.name === 'email' ? Validators.email : Validators.nullValidator
+        ]];
+      }
+    }
+
+    this.dynamicForm = this.fb.group(formGroup);
+
+    if (this.dynamicForm.get('confirmemail')) {
+      this.dynamicForm.get('confirmemail')?.setValidators([createConfirmEmailValidator(this.dynamicForm), Validators.required]);
+    }
+  }
+
+  private getControls(){
+    this.controlService.getControls().subscribe((value)=>{
+      this.controls = value.controls;
+
+      this.generateForm()
+    });
   }
 }

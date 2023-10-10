@@ -1,54 +1,56 @@
-<h1>{{title}}</h1>
+<div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+  <h1>{{title}}</h1>
 
-<form [formGroup]="dynamicForm" >
-  <div *ngFor="let control of controls">
+  <form [formGroup]="dynamicForm">
+    <div *ngFor="let control of filteredControls" style="margin-bottom: 20px;">
 
-    <div *ngIf="control?.enabled" style="display: flex; gap: 10px; justify-content: flex-start; margin-top: 10px;">
-      
-      <div *ngIf="control?.type == 'text' || control?.type == 'number' || control?.type == 'email'">
-        <label>{{ control?.label }}</label>
-        <input
-        [type]="control?.type"
-        [formControlName]="control?.name"
-        [name]="control?.name"
-      />
-      </div>
+      <div *ngIf="control?.enabled" style="display: flex; gap: 10px; justify-content: flex-start; margin-top: 10px;">
 
-      <div *ngIf="control?.type == 'checkbox'">
-        <label>{{ control?.label }}</label>
-        <input
-        [type]="control?.type"
-        [formControlName]="control?.name"
-        [name]="control?.name"
-        (change)="setCheckboxValue(control?.name, $event)"
-      />
-      </div>
-
-      <div *ngIf="control?.type == 'select'">
-        <label>{{ control?.label }}</label>
-        <select [formControlName]="control?.name" [name]="control?.name">
-          <option *ngFor="let country of control?.values" [value]="country">
-            {{country}}
-          </option>
-        </select>
-      </div>
-
-      <div *ngIf="dynamicForm.controls[control?.name]?.invalid && (dynamicForm.controls[control?.name]?.dirty || dynamicForm.controls[control?.name]?.touched)">
-        <div *ngIf="dynamicForm.controls[control?.name].hasError('email') && !dynamicForm.controls[control?.name].hasError('required')">
-            * {{control?.name}} is invalid.
+        <div *ngIf="control?.type == 'text' || control?.type == 'number' || control?.type == 'email'">
+          <label>{{ control?.label }}</label>
+          <input
+          [type]="control?.type"
+          [formControlName]="control?.name"
+          [name]="control?.name"
+        />
         </div>
-  
-        <div *ngIf="dynamicForm.controls[control?.name].hasError('required')">
-          * {{control?.name}} is required.
-        </div>
-  
-        <div *ngIf="dynamicForm.controls['confirmemail'].hasError('emailMatch')">
-          * {{control?.name}} dont match.
-        </div>
-      </div>
 
+        <div *ngIf="control?.type == 'checkbox'">
+          <label>{{ control?.label }}</label>
+          <input
+          [type]="control?.type"
+          [formControlName]="control?.name"
+          [name]="control?.name"
+          (change)="setCheckboxValue(control?.name, $event)"
+        />
+        </div>
+
+        <div *ngIf="control?.type == 'select'">
+          <label>{{ control?.label }}</label>
+          <select [formControlName]="control?.name" [name]="control?.name">
+            <option *ngFor="let country of control?.values" [value]="country">
+              {{country}}
+            </option>
+          </select>
+        </div>
+
+        <div *ngIf="dynamicForm.controls[control?.name]?.invalid && (dynamicForm.controls[control?.name]?.dirty || dynamicForm.controls[control?.name]?.touched)">
+          <div *ngIf="dynamicForm.controls[control?.name].hasError('email') && !dynamicForm.controls[control?.name].hasError('required')">
+              * {{control?.name}} is invalid.
+          </div>
+
+          <div *ngIf="dynamicForm.controls[control?.name].hasError('required')">
+            * {{control?.name}} is required.
+          </div>
+
+          <div *ngIf="dynamicForm.controls[control?.name]?.errors?.emailMismatch">
+            * emails don't match.
+          </div>
+        </div>
+
+      </div>
     </div>
-  </div>
-  
-  <button type="button" (click)="onSubmit()" >Submit</button>
-</form>
+
+    <button type="button" (click)="onSubmit()" [disabled]="dynamicForm.invalid">Submit</button>
+  </form>
+</div>
