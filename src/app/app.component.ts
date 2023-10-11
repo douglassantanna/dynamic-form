@@ -15,39 +15,43 @@ export function createConfirmEmailValidator(formGroup: FormGroup): ValidatorFn {
   styles: []
 })
 export class AppComponent implements OnInit {
-  title = 'dynamic-forms-poc';
-
+  title = 'Enter your details';
   dynamicForm: FormGroup = {} as FormGroup;
-
   controls: any[] = [];
   filteredControls: any[] = [];
-
   isMembeship = true;
+  isFamilyMembership = false;
   selectedEvent = true;
+  firstColumnControls: any[] = [];
+  secondColumnControls: any[] = [];
 
   constructor(
     private controlService:ControlService,
     private fb:FormBuilder
     ){this.dynamicForm = this.fb.group({})}
 
-    ngOnInit(): void {
+  ngOnInit(): void {
     this.getControls();
   }
-
-  onSubmit(){
-    console.log(this.dynamicForm.value)
-  }
-
   setCheckboxValue(field:any, event:any){
     this.dynamicForm.get(field)?.setValue(event.target.checked);
   }
-
   private generateForm() {
     const formGroup: any = {};
     this.filteredControls = this.controls;
 
     if (this.isMembeship || this.selectedEvent) {
       this.filteredControls = this.filteredControls.filter((control: any) => control.name !== 'home');
+    }
+
+    if(!this.isFamilyMembership){
+      this.filteredControls = this.filteredControls.filter((control:any) => !control.name.includes('second'))
+      this.firstColumnControls = this.filteredControls.filter((control:any) => !control.name.includes('second'))
+    }
+
+    if(this.isFamilyMembership){
+      this.secondColumnControls = this.filteredControls.filter((control:any) => control.name.includes('second'))
+      this.firstColumnControls = this.filteredControls.filter((control:any) => !control.name.includes('second'))
     }
 
     for (let field of this.filteredControls) {
@@ -65,7 +69,6 @@ export class AppComponent implements OnInit {
       this.dynamicForm.get('confirmemail')?.setValidators([createConfirmEmailValidator(this.dynamicForm), Validators.required]);
     }
   }
-
   private getControls(){
     this.controlService.getControls().subscribe({
       next:(value)=> {
@@ -76,5 +79,8 @@ export class AppComponent implements OnInit {
         console.log(err);
       },
     });
+  }
+  onSubmit(){
+    console.log(this.dynamicForm.value)
   }
 }

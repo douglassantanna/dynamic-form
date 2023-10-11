@@ -1,9 +1,51 @@
 {
     "controls": [
+          {
+            "name": "secondTitle",
+            "dashlabel": "Second Title",
+            "label": "Second Title",
+            "value": "",
+            "type": "text",
+            "enabled": false,
+            "editable": true,
+            "validators": {
+                "required": true,
+                "maxLength": null
+            },
+            "values": null
+        },
+        {
+            "name": "secondFirstName",
+            "dashlabel": "Second First Name",
+            "label": "Second First Name",
+            "value": "",
+            "type": "text",
+            "enabled": true,
+            "editable": true,
+            "validators": {
+                "required": true,
+                "maxLength": null
+            },
+            "values": null
+        },
+        {
+            "name": "secondSurName",
+            "dashlabel": "Second SurName",
+            "label": "Second SurName",
+            "value": "",
+            "type": "text",
+            "enabled": true,
+            "editable": true,
+            "validators": {
+                "required": true,
+                "maxLength": null
+            },
+            "values": null
+        },
         {
             "name": "firstName",
             "dashlabel": "",
-            "label": "First Name:",
+            "label": "First Name",
             "value": "",
             "type": "text",
             "enabled": true,
@@ -17,7 +59,7 @@
         {
             "name": "surName",
             "dashlabel": "",
-            "label": "Last Name:",
+            "label": "Last Name",
             "value": "",
             "type": "text",
             "enabled": true,
@@ -31,7 +73,7 @@
         {
             "name": "addressLineOne",
             "dashlabel": "",
-            "label": "Address Line One:",
+            "label": "Address Line One",
             "value": "",
             "type": "text",
             "enabled": true,
@@ -44,11 +86,11 @@
         },
         {
             "name": "addressLineTwo",
-            "dashlabel": "Additonal Address Line:",
-            "label": "Address 23",
+            "dashlabel": "Additonal Address Line",
+            "label": "Address Line Two",
             "value": "",
             "type": "text",
-            "enabled": false,
+            "enabled": true,
             "editable": true,
             "validators": {
                 "required": false,
@@ -62,7 +104,7 @@
             "label": "Postcode",
             "value": "",
             "type": "text",
-            "enabled": true,
+            "enabled": false,
             "editable": true,
             "validators": {
                 "required": true,
@@ -371,6 +413,24 @@
             ]
         },
         {
+            "name": "home",
+            "dashlabel": "Preferred Location",
+            "label": "Preferred Location",
+            "value": "",
+            "type": "select",
+            "enabled": true,
+            "editable": true,
+            "validators": {
+              "required": true,
+              "maxLength": null
+            },
+            "values": [
+              "Fota House",
+              "Strokestown House and Park",
+              "Johnstown Castle"
+            ]
+          },
+          {
             "name": "acceptTerms",
             "dashlabel": "Terms and Conditions",
             "label": "Accept Terms",
@@ -425,66 +485,6 @@
                 "maxLength": null
             },
             "values": null
-        },
-        {
-            "name": "secondTitle",
-            "dashlabel": "Second Title",
-            "label": "Second Title",
-            "value": "",
-            "type": "text",
-            "enabled": true,
-            "editable": true,
-            "validators": {
-                "required": true,
-                "maxLength": null
-            },
-            "values": null
-        },
-        {
-            "name": "secondFirstName",
-            "dashlabel": "Second First Name",
-            "label": "Second First Name",
-            "value": "",
-            "type": "text",
-            "enabled": true,
-            "editable": true,
-            "validators": {
-                "required": true,
-                "maxLength": null
-            },
-            "values": null
-        },
-        {
-            "name": "secondSurName",
-            "dashlabel": "Second SurName",
-            "label": "Second SurName",
-            "value": "",
-            "type": "text",
-            "enabled": true,
-            "editable": true,
-            "validators": {
-                "required": true,
-                "maxLength": null
-            },
-            "values": null
-        },
-        {
-            "name": "home",
-            "dashlabel": "Preferred Location",
-            "label": "Preferred Location",
-            "value": "",
-            "type": "select",
-            "enabled": true,
-            "editable": true,
-            "validators": {
-              "required": true,
-              "maxLength": null
-            },
-            "values": [
-              "Fota House",
-              "Strokestown House and Park",
-              "Johnstown Castle"
-            ]
-          }
+        }
     ]
 }
