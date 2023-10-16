@@ -31,13 +31,14 @@
           [required]="control?.validators?.required"
         />
       </div>
-      <div *ngSwitchCase="'select'" [ngClass]="getControlClass(control?.name)">
+      <div *ngSwitchCase="'select'">
         <select
           id="floatingSelectInvalid"
           class="form-control"
           [formControlName]="control?.name"
           [name]="control?.name"
           [required]="control?.validators?.required"
+          [ngClass]="isTitle ? 'col-md-2' : 'col'"
         >
           <option value="" disabled selected>{{ control.label }}</option>
           <option *ngFor="let country of control?.values" [value]="country">

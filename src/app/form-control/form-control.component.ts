@@ -4,10 +4,15 @@ import { FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-form-control',
   templateUrl: './form-control.component.html',
-  styles: [
+  styles: [`
+  .small {
+    background-color: red;
+    }
+  `
   ]
 })
 export class FormControlComponent {
+  @Input() isTitle= false;
   @Input() control: any;
   @Input() dynamicForm: FormGroup = {} as FormGroup;
   constructor() { }
@@ -16,11 +21,26 @@ export class FormControlComponent {
     this.dynamicForm.get(field)?.setValue(event.target.checked);
   }
 
-  getControlClass(controlName: string): object {
+  getControlClass(): object {
     return {
-      'col-md-6 mb-2': this.isControlTitle(controlName),
-      'mb-2': !this.isControlTitle(controlName)
+      'col-md-2': this.isTitle,
+      'col': !this.isTitle,
     };
+  }
+
+  getControlNameClass(controlName:string) : object{
+    return {
+      'col': this.checkControlName(controlName),
+      'col-6': this.checkControlName(controlName),
+    }
+  }
+
+  checkControlName(controlName:string): boolean{
+    if(controlName === 'surName' || controlName === 'firstName'){
+      return true;
+    }else {
+      return false;
+    }
   }
 
   preventSpacing(event: any, control: any) {

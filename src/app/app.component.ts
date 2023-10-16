@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
   controls: any[] = [];
   filteredControls: any[] = [];
   isMembeship = true;
-  isFamilyMembership = true;
+  isFamilyMembership = false;
   isTitle = false;
   selectedEvent = true;
   firstColumnControls: any[] = [];
@@ -35,26 +35,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.getControls();
   }
-  setCheckboxValue(field:any, event:any){
-    this.dynamicForm.get(field)?.setValue(event.target.checked);
-  }
 
-  getControlClass(controlName: string): object {
-    return {
-      'col-md-4 mb-2': this.isControlTitle(controlName),
-      'mb-2': !this.isControlTitle(controlName)
-    };
-  }
-
-  preventSpacing(event: any, control: any) {
-    if (!control.name.toLocaleLowerCase().includes("address")) {
-      event.preventDefault();
-    }
-  }
-
-  private isControlTitle(controlName: string): boolean {
-    return controlName === 'title';
-  }
   private generateForm() {
     const formGroup: any = {};
 
@@ -86,7 +67,7 @@ export class AppComponent implements OnInit {
       ['title', 'firstName', 'surName'].includes(control.name)
       );
 
-      const excludedControlNames = ['title', 'firstName', 'surName'];
+      const excludedControlNames = ['title', 'firstName', 'surName', 'secondFirstName', 'secondSurName'];
 
       this.firstColumnControls = this.filteredControls.filter((control: any) =>
       !excludedControlNames.includes(control.name)
@@ -107,8 +88,6 @@ export class AppComponent implements OnInit {
     if (this.dynamicForm.get('confirmemail')) {
       this.dynamicForm.get('confirmemail')?.setValidators([createConfirmEmailValidator(this.dynamicForm), Validators.required]);
     }
-
-    console.log(this.dynamicForm.value)
   }
   private getControls(){
     this.controlService.getControls().subscribe({

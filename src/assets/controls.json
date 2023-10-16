@@ -6,7 +6,7 @@
             "label": " Title",
             "value": "",
             "type": "select",
-            "enabled": false,
+            "enabled": true,
             "editable": true,
             "validators": {
                 "required": true,
@@ -117,11 +117,11 @@
         },
         {
             "name": "postCode",
-            "dashlabel": "Postcode:",
+            "dashlabel": "Postcode",
             "label": "Postcode",
             "value": "",
             "type": "text",
-            "enabled": false,
+            "enabled": true,
             "editable": true,
             "validators": {
                 "required": true,
@@ -129,6 +129,20 @@
             },
             "values": null
         },
+        {
+          "name": "county",
+          "dashlabel": "County",
+          "label": "County",
+          "value": "",
+          "type": "text",
+          "enabled": true,
+          "editable": true,
+          "validators": {
+              "required": true,
+              "maxLength": null
+          },
+          "values": null
+      },
         {
             "name": "email",
             "dashlabel": "",

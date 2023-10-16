@@ -1,7 +1,12 @@
-<form [formGroup]="dynamicForm" style="background-color: beige;">
-  <div class="row">
+<form [formGroup]="dynamicForm" *ngIf="true">
+  <div class="form-row">
     <div class="form-group col-md-12 mb-0" *ngIf="isFamilyMembership">
       <label class="mb-0">First Member Name</label>
+    </div>
+
+    <div *ngFor="let control of titleRowColumnsControls" [ngClass]="isTitle ? 'form-group col-md-4' : 'form-group col-md-6'">
+      <app-form-control [control]="control" [dynamicForm]="dynamicForm" [isTitle]="isTitle">
+      </app-form-control>
     </div>
 
     <div *ngFor="let control of firstColumnControls" class="form-group col-md-6">
@@ -18,7 +23,7 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="form-row">
     <div  *ngFor="let control of checkboxesColumnControls" class="form-group col-md-6">
       <app-form-control [control]="control" [dynamicForm]="dynamicForm">
       </app-form-control>
@@ -42,3 +47,16 @@
     <div class="col" style="background-color: rgb(236, 244, 90);">col 4</div>
   </div>
 </div>
+
+<div class="row" *ngIf="false">
+  <div class="col-md-2">
+      <input type="text" class="form-control">
+  </div>
+  <div class="col">
+      <input type="text" class="form-control">
+  </div>
+  <div class="col">
+      <input type="text" class="form-control">
+  </div>
+</div>
+
