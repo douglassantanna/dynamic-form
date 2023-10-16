@@ -20,11 +20,13 @@ export class AppComponent implements OnInit {
   controls: any[] = [];
   filteredControls: any[] = [];
   isMembeship = true;
-  isFamilyMembership = false;
+  isFamilyMembership = true;
+  isTitle = false;
   selectedEvent = true;
   firstColumnControls: any[] = [];
   secondColumnControls: any[] = [];
-
+  checkboxesColumnControls: any[] = [];
+  titleRowColumnsControls: any[] = [];
   constructor(
     private controlService:ControlService,
     private fb:FormBuilder
@@ -36,9 +38,29 @@ export class AppComponent implements OnInit {
   setCheckboxValue(field:any, event:any){
     this.dynamicForm.get(field)?.setValue(event.target.checked);
   }
+
+  getControlClass(controlName: string): object {
+    return {
+      'col-md-4 mb-2': this.isControlTitle(controlName),
+      'mb-2': !this.isControlTitle(controlName)
+    };
+  }
+
+  preventSpacing(event: any, control: any) {
+    if (!control.name.toLocaleLowerCase().includes("address")) {
+      event.preventDefault();
+    }
+  }
+
+  private isControlTitle(controlName: string): boolean {
+    return controlName === 'title';
+  }
   private generateForm() {
     const formGroup: any = {};
-    this.filteredControls = this.controls;
+
+    this.filteredControls = this.controls.filter((control:any) => control.enabled);
+
+    this.isTitle = this.filteredControls.some((control: any) => control.name === 'title');
 
     if (this.isMembeship || this.selectedEvent) {
       this.filteredControls = this.filteredControls.filter((control: any) => control.name !== 'home');
@@ -50,17 +72,34 @@ export class AppComponent implements OnInit {
     }
 
     if(this.isFamilyMembership){
-      this.secondColumnControls = this.filteredControls.filter((control:any) => control.name.includes('second'))
-      this.firstColumnControls = this.filteredControls.filter((control:any) => !control.name.includes('second'))
+      this.secondColumnControls = this.filteredControls.filter((control:any) => control.name.includes('second') && control.type != 'checkbox')
+      this.firstColumnControls = this.filteredControls.filter((control:any) => !control.name.includes('second') && control.type != 'checkbox')
+    }
+
+    this.checkboxesColumnControls = this.filteredControls.filter((control:any)=> control.type == 'checkbox')
+    if(this.checkboxesColumnControls){
+      this.firstColumnControls = this.filteredControls.filter((control:any) => !control.name.includes('second') && control.type != 'checkbox')
+    }
+
+    if (this.isTitle) {
+      this.titleRowColumnsControls = this.filteredControls.filter((control: any) =>
+      ['title', 'firstName', 'surName'].includes(control.name)
+      );
+
+      const excludedControlNames = ['title', 'firstName', 'surName'];
+
+      this.firstColumnControls = this.filteredControls.filter((control: any) =>
+      !excludedControlNames.includes(control.name)
+      );
+
+      this.firstColumnControls = this.firstColumnControls.filter((control:any) => control.type != 'checkbox')
     }
 
     for (let field of this.filteredControls) {
-      if (field.enabled) {
-        formGroup[field.name] = [field.value, [
-          field.validators.required ? Validators.required : Validators.nullValidator,
-          field.name === 'email' ? Validators.email : Validators.nullValidator]
-        ];
-      }
+      formGroup[field.name] = [field.value, [
+        field.validators.required ? Validators.required : Validators.nullValidator,
+        field.name === 'email' ? Validators.email : Validators.nullValidator]
+      ];
     }
 
     this.dynamicForm = this.fb.group(formGroup);
@@ -68,6 +107,8 @@ export class AppComponent implements OnInit {
     if (this.dynamicForm.get('confirmemail')) {
       this.dynamicForm.get('confirmemail')?.setValidators([createConfirmEmailValidator(this.dynamicForm), Validators.required]);
     }
+
+    console.log(this.dynamicForm.value)
   }
   private getControls(){
     this.controlService.getControls().subscribe({

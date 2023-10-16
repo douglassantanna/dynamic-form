@@ -1,20 +1,28 @@
-<div class="m-2">
-  <h1>{{ title }}</h1>
+<form [formGroup]="dynamicForm" style="background-color: beige;">
+  <div class="row">
+    <div class="form-group col-md-12 mb-0" *ngIf="isFamilyMembership">
+      <label class="mb-0">First Member Name</label>
+    </div>
 
-  <div >
-    <section class="second-member">
-      <label for="basic-url" class="form-label m-2" *ngIf="isFamilyMembership">Second Member Name</label>
-      <div *ngFor="let control of secondColumnControls;let i = index">
-        <app-form-control [control]="control" [dynamicForm]="dynamicForm" [index]="i"></app-form-control>
-      </div>
-    </section>
+    <div *ngFor="let control of firstColumnControls" class="form-group col-md-6">
+      <app-form-control [control]="control" [dynamicForm]="dynamicForm">
+      </app-form-control>
+    </div>
 
-    <section class="first-member">
-      <label for="basic-url" class="form-label m-2" *ngIf="isFamilyMembership">First Member Name</label>
-      <div *ngFor="let control of firstColumnControls;let i = index">
-        <app-form-control [control]="control" [dynamicForm]="dynamicForm" [index]="i"></app-form-control>
-      </div>
-    </section>
+    <div class="form-group col-md-12 mb-0" *ngIf="isFamilyMembership">
+      <label class="mb-0">Second Member Name</label>
+    </div>
+    <div *ngFor="let control of secondColumnControls" class="form-group col-md-6">
+      <app-form-control [control]="control" [dynamicForm]="dynamicForm">
+      </app-form-control>
+    </div>
+  </div>
+
+  <div class="row">
+    <div  *ngFor="let control of checkboxesColumnControls" class="form-group col-md-6">
+      <app-form-control [control]="control" [dynamicForm]="dynamicForm">
+      </app-form-control>
+    </div>
   </div>
 
   <button
@@ -22,5 +30,15 @@
     type="button"
     (click)="onSubmit()"
     [disabled]="dynamicForm.invalid"
-    >Submit</button>
+    >Submit
+  </button>
+</form>
+
+<div class="container" *ngIf="false">
+  <div style="background-color: lightblue;">
+    <div class="col" style="background-color: rgb(68, 189, 230);">col 1</div>
+    <div class="col" style="background-color: rgb(32, 179, 84);">col 2</div>
+    <div class="col" style="background-color: rgb(167, 244, 90);">col 3</div>
+    <div class="col" style="background-color: rgb(236, 244, 90);">col 4</div>
+  </div>
 </div>

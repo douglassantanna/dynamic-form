@@ -1,7 +1,7 @@
 <form [formGroup]="dynamicForm">
-  <div *ngIf="control?.enabled" class="row">
+  <div *ngIf="control?.enabled">
     <ng-container [ngSwitch]="control?.type">
-      <div *ngSwitchCase="'text'" [ngClass]="(index % 2 == 0) ? 'col-12 mb-2' : 'col-md-6 mb-2'">
+      <div *ngSwitchCase="'text'">
         <input
           class="form-control"
           [type]="control?.type"
@@ -11,7 +11,7 @@
           [required]="control?.validators?.required"
         />
       </div>
-      <div *ngSwitchCase="'number'" [ngClass]="(index % 2 == 0) ? 'col-12 mb-2' : 'col-md-6 mb-2'">
+      <div *ngSwitchCase="'number'">
         <input
           class="form-control"
           [type]="control?.type"
@@ -21,7 +21,7 @@
           [required]="control?.validators?.required"
         />
       </div>
-      <div *ngSwitchCase="'email'" [ngClass]="(index % 2 == 0) ? 'col-12 mb-2' : 'col-md-6 mb-2'">
+      <div *ngSwitchCase="'email'">
         <input
           class="form-control"
           [type]="control?.type"
@@ -31,7 +31,7 @@
           [required]="control?.validators?.required"
         />
       </div>
-      <div *ngSwitchCase="'select'" [ngClass]="(index % 2 == 0) ? 'col-12 mb-2' : 'col-md-6 mb-2'">
+      <div *ngSwitchCase="'select'" [ngClass]="getControlClass(control?.name)">
         <select
           id="floatingSelectInvalid"
           class="form-control"
@@ -45,7 +45,7 @@
           </option>
         </select>
       </div>
-      <div *ngSwitchCase="'checkbox'" [ngClass]="(index % 2 == 0) ? 'col-12 mb-2' : 'col-md-6 mb-2'">
+      <div *ngSwitchCase="'checkbox'">
         <div class="form-check">
           <input
             class="form-check-input"
@@ -65,14 +65,14 @@
 
 <div *ngIf="dynamicForm.controls[control?.name]?.invalid && (dynamicForm.controls[control?.name]?.dirty || dynamicForm.controls[control?.name]?.touched)">
   <div *ngIf="dynamicForm.controls[control?.name].hasError('email') && !dynamicForm.controls[control?.name].hasError('required')">
-    <label style="color: red;">{{control?.label}} is invalid.</label>
+    <label class="text-danger">{{control?.label}} is invalid.</label>
   </div>
 
   <div *ngIf="dynamicForm.controls[control?.name].hasError('required')">
-    <label style="color: red;">{{control?.label}} is required.</label>
+    <label class="text-danger">{{control?.label}} is required.</label>
   </div>
 
   <div *ngIf="dynamicForm.controls[control?.name]?.errors?.emailMismatch">
-    <label style="color: red;">{{control?.label}} emails don't match.</label>
+    <label class="text-danger">{{control?.label}} emails don't match.</label>
   </div>
 </div>

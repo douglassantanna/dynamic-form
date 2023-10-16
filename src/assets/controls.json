@@ -1,6 +1,23 @@
 {
     "controls": [
           {
+            "name": "title",
+            "dashlabel": "Title",
+            "label": " Title",
+            "value": "",
+            "type": "select",
+            "enabled": false,
+            "editable": true,
+            "validators": {
+                "required": true,
+                "maxLength": null
+            },
+            "values": [
+              "Mr",
+              "Mrs"
+            ]
+        },
+          {
             "name": "secondTitle",
             "dashlabel": "Second Title",
             "label": "Second Title",
@@ -464,7 +481,7 @@
             "label": "Opt into our Loyalty Program",
             "value": "false",
             "type": "checkbox",
-            "enabled": false,
+            "enabled": true,
             "editable": false,
             "validators": {
                 "required": false,
